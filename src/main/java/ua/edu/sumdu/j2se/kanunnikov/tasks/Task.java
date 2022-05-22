@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 /**
  * Tasks blueprint.
+ *
  * @author Mykola Kanunnikov (Nick Eve)
  * @version 1.0
  */
@@ -24,8 +25,9 @@ public class Task {
 
     /**
      * It creates inactive and non-repeating task.
+     *
      * @param title - name task however you want
-     * @param time - not conventional, just int
+     * @param time  - not conventional, just int
      */
     public Task(String title, int time) {
         this.title = title;
@@ -34,9 +36,10 @@ public class Task {
 
     /**
      * It creates inactive and repeating task.
-     * @param title - name task however you want
-     * @param start - start of the time for task
-     * @param end - end of the period provided
+     *
+     * @param title    - name task however you want
+     * @param start    - start of the time for task
+     * @param end      - end of the period provided
      * @param interval - step between milestones (rounds) of task during the period
      */
     public Task(String title, int start, int end, int interval) {
@@ -50,8 +53,9 @@ public class Task {
      * It provides return as described below by own means
      * for inactive or non-repeating tasks, and
      * by means of specific methods for repeating ones.
+     *
      * @param current - int representing the time
-     * considered as current
+     *                considered as current
      * @return - the closest milestone (round)
      * of task in the time period, if any
      */
@@ -73,6 +77,7 @@ public class Task {
     /**
      * It creates array of milestones (rounds) for task
      * resulting from time period and interval provided.
+     *
      * @return - array of ints needed in
      * nextTimeAfterRepeated method
      */
@@ -94,8 +99,9 @@ public class Task {
      * Here we go through the array provided by mileseonesMethod,
      * up to milestone which is bigger than current time.
      * Then we return value as per if-else logic provided.
-     * @param current - int representing the time
-     * considered as current
+     *
+     * @param current    - int representing the time
+     *                   considered as current
      * @param milestones - array from mileseonesMethod
      * @return - the closest milestone (round) of task in the
      * time period, if any
@@ -216,5 +222,17 @@ public class Task {
 
     public void setEndTime(int end) {
         this.end = end;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "title='" + title + '\'' +
+                ", time=" + time +
+                ", start=" + start +
+                ", end=" + end +
+                ", interval=" + interval +
+                ", active=" + active +
+                '}';
     }
 }

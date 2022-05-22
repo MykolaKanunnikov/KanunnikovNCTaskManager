@@ -10,5 +10,11 @@ public class Main {
         int currentTime = 17;
         System.out.println("Current time: " + currentTime);
         System.out.println("Next time: " + task.nextTimeAfter(currentTime));
+
+        ArrayTaskList list = new ArrayTaskList();
+        list.add(task);
+        list.add(task);
+        list.remove(task);
+        System.out.println(list);
     }
 }
