@@ -20,7 +20,6 @@ public class Task {
     private int start;
     private int end;
     private int interval;
-
     private boolean active;
 
     /**
@@ -30,6 +29,9 @@ public class Task {
      * @param time  - not conventional, just int
      */
     public Task(String title, int time) {
+        if (time < 0) {
+            throw new IllegalArgumentException("Time cannot be negative");
+        }
         this.title = title;
         this.time = time;
     }
@@ -43,6 +45,9 @@ public class Task {
      * @param interval - step between milestones (rounds) of task during the period
      */
     public Task(String title, int start, int end, int interval) {
+        if (start < 0 || end <= 0 || interval <= 0) {
+            throw new IllegalArgumentException("Time cannot be negative, as well as interval cannot be zero");
+        }
         this.title = title;
         this.start = start;
         this.end = end;
@@ -69,7 +74,6 @@ public class Task {
         } else if (current >= getEndTime() && isRepeated()) {
             return -1;
         } else {
-            milestonesMethod();
             return nextTimeAfterRepeated(current, milestonesMethod());
         }
     }
@@ -226,13 +230,13 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "title='" + title + '\'' +
-                ", time=" + time +
-                ", start=" + start +
-                ", end=" + end +
-                ", interval=" + interval +
-                ", active=" + active +
-                '}';
+        return "Task{"
+                + "title='" + title + '\''
+                + ", time=" + time
+                + ", start=" + start
+                + ", end=" + end
+                + ", interval=" + interval
+                + ", active=" + active
+                + '}';
     }
 }

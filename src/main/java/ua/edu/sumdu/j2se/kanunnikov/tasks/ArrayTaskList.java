@@ -29,6 +29,9 @@ public class ArrayTaskList {
      * @param task - task to be added.
      */
     public void add(Task task) {
+        if (task == null) {
+            throw new IllegalArgumentException("Task cannot be null");
+        }
         ensureCapacity();
         for (int i = 0; i < taskArray.length; i++) {
             if (taskArray[i] == null) {
@@ -48,7 +51,7 @@ public class ArrayTaskList {
      */
     public boolean remove(Task task) {
         for (int i = 0; i < taskArray.length; i++) {
-            if (taskArray[i] == task) {
+            if (taskArray[i].equals(task)) {
                 int numMoved = size() - i;
                 System.arraycopy(taskArray, i + 1, taskArray, i,
                         numMoved);
@@ -83,17 +86,17 @@ public class ArrayTaskList {
      * @return - searched element
      */
     public Task getTask(int index) {
+        if (index > taskArray.length) {
+            throw new IndexOutOfBoundsException("Wrong index");
+        }
         return taskArray[index];
     }
 
     public ArrayTaskList incoming(int from, int to) {
         ArrayTaskList incomingTasks = new ArrayTaskList();
-        for (int i = 0; i <= size(); i++) {
-            if (taskArray[i] != null) {
-                int temp = taskArray[i].getTime();
-                if (temp > from && temp <= to && from != 0) {
-                    incomingTasks.add(taskArray[i]);
-                }
+        for (int i = 0; i < size(); i++) {
+            if (getTask(i).nextTimeAfter(from) > from && getTask(i).nextTimeAfter(from) < to) {
+                incomingTasks.add(getTask(i));
             }
         }
         return incomingTasks;
@@ -102,7 +105,8 @@ public class ArrayTaskList {
     @Override
     public String toString() {
         return "ArrayTaskList{"
-                + "taskArray=" + Arrays.toString(taskArray)
+                + "taskArray="
+                + Arrays.toString(taskArray)
                 + '}';
     }
 }
