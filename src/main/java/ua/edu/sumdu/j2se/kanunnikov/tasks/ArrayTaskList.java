@@ -2,7 +2,7 @@ package ua.edu.sumdu.j2se.kanunnikov.tasks;
 
 import java.util.Arrays;
 
-public class ArrayTaskList {
+public class ArrayTaskList extends AbstractTaskList {
 
     private static final int DEFAULT_CAPACITY = 10;
     private Task[] taskArray;
@@ -90,16 +90,6 @@ public class ArrayTaskList {
             throw new IndexOutOfBoundsException("Wrong index");
         }
         return taskArray[index];
-    }
-
-    public ArrayTaskList incoming(int from, int to) {
-        ArrayTaskList incomingTasks = new ArrayTaskList();
-        for (int i = 0; i < size(); i++) {
-            if (getTask(i).nextTimeAfter(from) > from && getTask(i).nextTimeAfter(from) < to) {
-                incomingTasks.add(getTask(i));
-            }
-        }
-        return incomingTasks;
     }
 
     @Override

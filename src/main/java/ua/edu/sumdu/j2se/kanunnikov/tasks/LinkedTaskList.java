@@ -1,6 +1,6 @@
 package ua.edu.sumdu.j2se.kanunnikov.tasks;
 
-public class LinkedTaskList {
+public class LinkedTaskList extends AbstractTaskList {
 
     private Node head;
     private int size;
@@ -51,7 +51,6 @@ public class LinkedTaskList {
         Node nextAfterDeleted = null;
         Node beforeDeleted = null;
         int i = 0;
-
         while (i != size) {
             if (nextAfterDeleted == null && task.equals(node.element)) {
                 nextAfterDeleted = node.next;
@@ -92,28 +91,11 @@ public class LinkedTaskList {
         }
         Node node = head;
         int i = 0;
-
         while (i != index) {
             node = node.next;
             i++;
         }
         return node.element;
-    }
-
-    public LinkedTaskList incoming(int from, int to) {
-        LinkedTaskList incomingTasks = new LinkedTaskList();
-        if (from < 0) {
-            throw new IllegalArgumentException("No negative, please");
-        } else if (from > to) {
-            throw new IllegalArgumentException("From parameter should not exceed to");
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (getTask(i).nextTimeAfter(from) > from && getTask(i).nextTimeAfter(from) < to) {
-                    incomingTasks.add(getTask(i));
-                }
-            }
-        }
-        return incomingTasks;
     }
 
     @Override
