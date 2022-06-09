@@ -1,6 +1,6 @@
 package ua.edu.sumdu.j2se.kanunnikov.tasks;
 
-public abstract class AbstractTaskList {
+public abstract class AbstractTaskList implements Iterable, Cloneable {
 
     /**
      * It's a field to keep a container's type for the incoming method.
@@ -15,7 +15,7 @@ public abstract class AbstractTaskList {
     public abstract void add(Task task);
 
     /**
-     * It deletes a task from the LinkedTaskList and
+     * It deletes a task from the TaskList and
      * returns boolean depending on there is an appropriate one.
      * It removes any appropriate task if there are more than one.
      *
@@ -59,7 +59,8 @@ public abstract class AbstractTaskList {
             throw new IllegalArgumentException("From parameter should not exceed to");
         } else {
             for (int i = 0; i < size(); i++) {
-                if (getTask(i).nextTimeAfter(from) > from && getTask(i).nextTimeAfter(from) < to) {
+                if (getTask(i).nextTimeAfter(from) >
+                        from && getTask(i).nextTimeAfter(from) < to) {
                     incomingTasks.add(getTask(i));
                 }
             }
@@ -73,5 +74,29 @@ public abstract class AbstractTaskList {
 
     public void setType(ListTypes.types type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AbstractTaskList that = (AbstractTaskList) o;
+
+        return getType() == that.getType();
+    }
+
+    @Override
+    public int hashCode() {
+        return getType() != null ? getType().hashCode() : 0;
+    }
+
+    @Override
+    public AbstractTaskList clone() {
+        try {
+            return (AbstractTaskList) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

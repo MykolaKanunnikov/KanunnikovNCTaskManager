@@ -10,10 +10,10 @@ import java.util.Arrays;
  * Tasks blueprint.
  *
  * @author Mykola Kanunnikov (Nick Eve)
- * @version 1.0
+ * @version 1.1
  */
 
-public class Task {
+public class Task implements Cloneable {
 
     private String title;
     private int time;
@@ -238,5 +238,40 @@ public class Task {
                 + ", interval=" + interval
                 + ", active=" + active
                 + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Task task = (Task) o;
+
+        if (getTime() != task.getTime()) return false;
+        if (start != task.start) return false;
+        if (end != task.end) return false;
+        if (interval != task.interval) return false;
+        if (isActive() != task.isActive()) return false;
+        return getTitle() != null ? getTitle().equals(task.getTitle()) : task.getTitle() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getTitle() != null ? getTitle().hashCode() : 0;
+        result = 31 * result + getTime();
+        result = 31 * result + start;
+        result = 31 * result + end;
+        result = 31 * result + interval;
+        result = 31 * result + (isActive() ? 1 : 0);
+        return result;
+    }
+
+    public Task clone() {
+        try {
+            Task clone = (Task) super.clone();
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

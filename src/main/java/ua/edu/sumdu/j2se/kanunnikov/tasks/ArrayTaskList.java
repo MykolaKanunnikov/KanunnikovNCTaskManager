@@ -1,6 +1,8 @@
 package ua.edu.sumdu.j2se.kanunnikov.tasks;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayTaskList extends AbstractTaskList {
 
@@ -23,11 +25,6 @@ public class ArrayTaskList extends AbstractTaskList {
         }
     }
 
-    /**
-     * It adds a task to the ArrayTaskList.
-     *
-     * @param task - task to be added.
-     */
     public void add(Task task) {
         if (task == null) {
             throw new IllegalArgumentException("Task cannot be null");
@@ -41,14 +38,6 @@ public class ArrayTaskList extends AbstractTaskList {
         }
     }
 
-    /**
-     * It deletes a task from the ArrayTaskList and
-     * returns boolean depending on there is an appropriate one.
-     * It removes any appropriate task if there are more than one.
-     *
-     * @param task - task to be deleted from
-     * @return - true when task found and false in another case
-     */
     public boolean remove(Task task) {
         for (int i = 0; i < taskArray.length; i++) {
             if (taskArray[i].equals(task)) {
@@ -61,11 +50,6 @@ public class ArrayTaskList extends AbstractTaskList {
         return false;
     }
 
-    /**
-     * It shows an amount of Task in the container.
-     *
-     * @return - amount of the container elements
-     */
     public int size() {
         int i = 0;
         int j = 0;
@@ -78,13 +62,6 @@ public class ArrayTaskList extends AbstractTaskList {
         return j;
     }
 
-    /**
-     * It shall give you an element under the index provided.
-     * Indexing starts from zero.
-     *
-     * @param index - search key
-     * @return - searched element
-     */
     public Task getTask(int index) {
         if (index > taskArray.length) {
             throw new IndexOutOfBoundsException("Wrong index");
@@ -98,5 +75,57 @@ public class ArrayTaskList extends AbstractTaskList {
                 + "taskArray="
                 + Arrays.toString(taskArray)
                 + '}';
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new ArrayIterator(getArrayTaskList());
+    }
+
+    public ArrayTaskList getArrayTaskList() {
+        return this;
+    }
+
+    @Override
+    public AbstractTaskList clone() {
+        ArrayTaskList newAtl = (ArrayTaskList) super.clone();
+        newAtl.taskArray = taskArray.clone();
+        return newAtl;
+    }
+
+    private class ArrayIterator implements Iterator {
+        ArrayTaskList atl;
+        int i = -1;
+
+        ArrayIterator(ArrayTaskList atl) {
+            this.atl = atl.getArrayTaskList();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return i < atl.size();
+        }
+
+        @Override
+        public Task next() {
+            if (i >= atl.size()) {
+                throw new NoSuchElementException("You reached the array end");
+            }
+            if (i == -1) {
+                i = 0;
+            }
+            Task task = atl.getTask(i);
+            i++;
+            return task;
+        }
+
+        @Override
+        public void remove() {
+            if (i == -1 || i >= size() + 1) {
+                throw new IllegalStateException();
+            }
+            atl.remove(getTask(i - 1));
+            i = 0;
+        }
     }
 }

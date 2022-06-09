@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.kanunnikov.tasks;
 
+import java.util.Iterator;
+
 public class LinkedTaskList extends AbstractTaskList {
 
     private Node head;
@@ -8,11 +10,6 @@ public class LinkedTaskList extends AbstractTaskList {
     public LinkedTaskList() {
     }
 
-    /**
-     * It adds a task to the LinkedTaskList.
-     *
-     * @param task - task to be added.
-     */
     public void add(Task task) {
         if (head == null) {
             head = new Node(task);
@@ -26,14 +23,6 @@ public class LinkedTaskList extends AbstractTaskList {
         size++;
     }
 
-    /**
-     * It deletes a task from the LinkedTaskList and
-     * returns boolean depending on there is an appropriate one.
-     * It removes any appropriate task if there are more than one.
-     *
-     * @param task - task to be deleted from
-     * @return - true when task found and false in another case
-     */
     public boolean remove(Task task) {
         if (task == null || head.element == null) {
             throw new NullPointerException();
@@ -69,22 +58,10 @@ public class LinkedTaskList extends AbstractTaskList {
         return false;
     }
 
-    /**
-     * It shows an amount of Task in the container.
-     *
-     * @return - amount of the container elements
-     */
     public int size() {
         return size;
     }
 
-    /**
-     * It shall give you an element under the index provided.
-     * Indexing starts from zero.
-     *
-     * @param index - search key
-     * @return - searched element
-     */
     public Task getTask(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Give me another index");
@@ -106,6 +83,12 @@ public class LinkedTaskList extends AbstractTaskList {
                 + '}';
     }
 
+
+    @Override
+    public Iterator iterator() {
+        return new LinkedIterator(this);
+    }
+
     private static class Node {
         private Task element;
         private Node next;
@@ -123,6 +106,45 @@ public class LinkedTaskList extends AbstractTaskList {
                     + ", next="
                     + next
                     + '}';
+        }
+    }
+
+    private class LinkedIterator implements Iterator {
+        Node ltl;
+        Task element;
+        Node visitedLtl;
+        private boolean nextIsCalled;
+
+
+        LinkedIterator(LinkedTaskList ltl) {
+            if (visitedLtl == null) {
+                this.ltl = ltl.head;
+            } else {
+                this.ltl = visitedLtl;
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return ltl != null;
+        }
+
+        @Override
+        public Task next() {
+            nextIsCalled = true;
+            element = ltl.element;
+            visitedLtl = ltl;
+            ltl = ltl.next;
+            return element;
+        }
+
+        @Override
+        public void remove() {
+            if (!nextIsCalled) {
+                throw new IllegalStateException();
+            } else {
+                LinkedTaskList.this.remove(element);
+            }
         }
     }
 }
