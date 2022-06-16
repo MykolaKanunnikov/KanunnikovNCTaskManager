@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.kanunnikov.tasks;
 
+import java.util.stream.Stream;
+
 public abstract class AbstractTaskList implements Iterable, Cloneable {
 
     /**
@@ -48,7 +50,7 @@ public abstract class AbstractTaskList implements Iterable, Cloneable {
      * @param to   - sublist end
      * @return - sublist of tasks
      */
-    public AbstractTaskList incoming(int from, int to) {
+    public final AbstractTaskList incoming(int from, int to) {
         if (getType() == null) {
             setType(ListTypes.types.ARRAY);
         }
@@ -58,15 +60,16 @@ public abstract class AbstractTaskList implements Iterable, Cloneable {
         } else if (from > to) {
             throw new IllegalArgumentException("From parameter should not exceed to");
         } else {
-            for (int i = 0; i < size(); i++) {
-                if (getTask(i).nextTimeAfter(from) >
-                        from && getTask(i).nextTimeAfter(from) < to) {
-                    incomingTasks.add(getTask(i));
-                }
-            }
+            getStream()
+                    .filter(task -> task.nextTimeAfter(from)>from
+                                    && task.nextTimeAfter(to)<to)
+                    .forEach(incomingTasks::add);
         }
         return incomingTasks;
     }
+
+    public abstract Stream<Task> getStream();
+
 
     public ListTypes.types getType() {
         return type;
