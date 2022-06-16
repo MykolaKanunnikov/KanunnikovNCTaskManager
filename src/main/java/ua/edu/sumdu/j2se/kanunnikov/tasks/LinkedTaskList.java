@@ -1,6 +1,7 @@
 package ua.edu.sumdu.j2se.kanunnikov.tasks;
 
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 public class LinkedTaskList extends AbstractTaskList {
 
@@ -73,6 +74,15 @@ public class LinkedTaskList extends AbstractTaskList {
             i++;
         }
         return node.element;
+    }
+
+    @Override
+    public Stream<Task> getStream() {
+        Stream.Builder<Task> builder = Stream.builder();
+        for (int i = 0; i < size(); i++) {
+            builder.add(getTask(i));
+        }
+        return builder.build();
     }
 
     @Override

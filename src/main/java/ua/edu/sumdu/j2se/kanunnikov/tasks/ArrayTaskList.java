@@ -1,8 +1,7 @@
 package ua.edu.sumdu.j2se.kanunnikov.tasks;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class ArrayTaskList extends AbstractTaskList {
 
@@ -68,6 +67,12 @@ public class ArrayTaskList extends AbstractTaskList {
         }
         return taskArray[index];
     }
+
+    @Override
+    public Stream<Task> getStream() {
+        return Stream.of(taskArray).filter(Objects::nonNull);
+    }
+
 
     @Override
     public String toString() {
